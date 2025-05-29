@@ -96,7 +96,7 @@ const LogseqApp = () => {
     if (logseq.settings!["popupShortcut"]) {
     logseq.App.registerCommandShortcut(
       {
-        binding: logseq.settings!["popupShortcut"],
+        binding: logseq.settings!["popupShortcut"] as string,
       },
       async () => {
         const activeText = await logseq.Editor.getEditingCursorPosition();
@@ -111,7 +111,7 @@ const LogseqApp = () => {
             };
           });
         } else if (!activeText && !currentPage) {
-          logseq.App.showMsg("Put cursor in block or navigate to specific page to use keyboard shortcut", "warning");
+          logseq.UI.showMsg("Put cursor in block or navigate to specific page to use keyboard shortcut", "warning");
           return;
         } else if (activeText && currentBlock) {
           updateAppState(draft => {
@@ -166,7 +166,7 @@ const LogseqApp = () => {
 
     if (logseq.settings!["shortcutBlock"]) {
       logseq.App.registerCommandShortcut(
-        { "binding": logseq.settings!["shortcutBlock"] },
+        { "binding": logseq.settings!["shortcutBlock"] as string },
         runGptBlock
       );
     }
@@ -205,7 +205,7 @@ const LogseqApp = () => {
       result = getOpenaiSettings().injectPrefix + result;
     }
     if (appState.selection.type === "singleBlockSelected") {
-      if (appState.selection.block.content.length > 0) {
+      if (appState.selection.block.content && appState.selection.block.content.length > 0) {
         logseq.Editor.insertBlock(appState.selection.block.uuid, result, {
           sibling: false,
         });

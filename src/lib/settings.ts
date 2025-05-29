@@ -91,14 +91,14 @@ function unescapeNewlines(s: string) {
 }
 
 export function getOpenaiSettings(): PluginOptions {
-  const apiKey = logseq.settings!["azureApiKey"];
-  const deploymentName = logseq.settings!["azureDeploymentName"];
-  const resourceName = logseq.settings!["azureResourceName"];
-  const injectPrefix = unescapeNewlines(logseq.settings!["injectPrefix"]);
-  const temperature = Number.parseFloat(logseq.settings!["openAITemperature"]);
-  const maxTokens = Number.parseInt(logseq.settings!["openAIMaxTokens"]);
-  const chatPrompt = logseq.settings!["chatPrompt"];
-  const apiVersion = logseq.settings!["azureApiVersion"];
+  const apiKey = logseq.settings!["azureApiKey"] as string;
+  const deploymentName = logseq.settings!["azureDeploymentName"] as string;
+  const resourceName = logseq.settings!["azureResourceName"] as string;
+  const injectPrefix = unescapeNewlines(logseq.settings!["injectPrefix"] as string);
+  const temperature = Number.parseFloat(logseq.settings!["openAITemperature"] as string);
+  const maxTokens = Number.parseInt(logseq.settings!["openAIMaxTokens"] as string);
+  const chatPrompt = logseq.settings!["chatPrompt"] as string;
+  const apiVersion = logseq.settings!["azureApiVersion"] as string;
   
   return {
     apiKey,

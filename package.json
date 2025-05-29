@@ -30,7 +30,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.7",
     "@heroicons/react": "^2.0.13",
-    "@logseq/libs": "^0.0.10",
+    "@logseq/libs": "^0.2.1",
     "clsx": "^1.2.1",
     "exponential-backoff": "^3.1.0",
     "fuse.js": "^6.6.2",

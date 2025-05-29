@@ -63,7 +63,7 @@ export async function runGptBlock(b: IHookEvent) {
     return;
   }
 
-  if (currentBlock.content.trim().length === 0) {
+  if (!currentBlock.content || currentBlock.content.trim().length === 0) {
     logseq.UI.showMsg("Empty Content", "warning");
     console.warn("Blank page");
     return;

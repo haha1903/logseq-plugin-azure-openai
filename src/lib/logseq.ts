@@ -6,7 +6,7 @@ function isBlockEntity(b: BlockEntity | BlockUUIDTuple): b is BlockEntity {
 
 async function getTreeContent(b: BlockEntity) {
   let content = "";
-  const trimmedBlockContent = b.content.trim();
+  const trimmedBlockContent = b.content?.trim() || "";
   if (trimmedBlockContent.length > 0) {
     content += trimmedBlockContent;
   }
