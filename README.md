@@ -21,6 +21,16 @@
     <br>
 </p>
 
+---
+
+## Acknowledgments
+
+This project is based on the excellent work by [@briansunter](https://github.com/briansunter) and his project [logseq-plugin-gpt3-openai](https://github.com/briansunter/logseq-plugin-gpt3-openai). We have modified and optimized it specifically for Azure OpenAI services.
+
+Special thanks to **Brian Sunter** for his outstanding contribution to the Logseq community!
+
+---
+
 # Usage
 
 ##  `gpt`
