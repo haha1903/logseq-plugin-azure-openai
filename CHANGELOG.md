@@ -37,6 +37,45 @@
 * **text-davinci-003:** Make davinci 3 the default ([dd72a75](https://github.com/haha1903/logseq-plugin-azure-openai/commit/dd72a757c5cb12855ab4890946ba81cfae25207c))
 * **whisper:** Whisper speech to text ([#100](https://github.com/haha1903/logseq-plugin-azure-openai/issues/100)) ([563b3b4](https://github.com/haha1903/logseq-plugin-azure-openai/commit/563b3b47ea01f01ce0c771cb59ac0007f56e81b3))
 
+# 1.0.0 (2025-05-29)
+
+
+### Bug Fixes
+
+* API url - add https ([#139](https://github.com/haha1903/logseq-plugin-azure-openai/issues/139)) ([27ee535](https://github.com/haha1903/logseq-plugin-azure-openai/commit/27ee535c335d9bfb35952296cb4e1806c0d7b5b4))
+* **build:** fix out of date pnpm lockfile ([#71](https://github.com/haha1903/logseq-plugin-azure-openai/issues/71)) ([de869aa](https://github.com/haha1903/logseq-plugin-azure-openai/commit/de869aafe240190c1009534a11a6e251c1697bb8))
+* **console-log:** remove extra console.log ([a631fc4](https://github.com/haha1903/logseq-plugin-azure-openai/commit/a631fc45172a13f9a6d0a7479666143245aa00b2))
+* default image size format ([af7163f](https://github.com/haha1903/logseq-plugin-azure-openai/commit/af7163fbb6130410156e20175c0a97aa34712e07))
+* **error-type:** Look at error type for quota ([cbd2fbd](https://github.com/haha1903/logseq-plugin-azure-openai/commit/cbd2fbdf40ee9ff4a3407d5fcd90440afa800cf6))
+* **error-type:** Look at error type for quota ([a99b7da](https://github.com/haha1903/logseq-plugin-azure-openai/commit/a99b7da03796f2ef32eebbdc98dabee39662a438))
+* migrate old url if in settings ([1d8bd59](https://github.com/haha1903/logseq-plugin-azure-openai/commit/1d8bd59210b6233c92362a7f7861779abb23b570))
+* **options:** whisper use custom configuration ([#127](https://github.com/haha1903/logseq-plugin-azure-openai/issues/127)) ([162a4a8](https://github.com/haha1903/logseq-plugin-azure-openai/commit/162a4a842a9b8a0efacbc90888e613f66477b1f9))
+* pnpm setup ([d3ac057](https://github.com/haha1903/logseq-plugin-azure-openai/commit/d3ac0573a09810146d6916d72ada3c1d11dc0f3f))
+* **pnpm:** fix pnpm lock ([#85](https://github.com/haha1903/logseq-plugin-azure-openai/issues/85)) ([ef25934](https://github.com/haha1903/logseq-plugin-azure-openai/commit/ef25934b5e5defe644633fa12f74a116e2d1c0a1))
+* **prod-image-path:** image path is different in prod ([2cc757d](https://github.com/haha1903/logseq-plugin-azure-openai/commit/2cc757dee751efb7eed6b3ada76baf4aa54ad828))
+* **settings:** Fix update settings bug ([c6bd72f](https://github.com/haha1903/logseq-plugin-azure-openai/commit/c6bd72f019b07b010e9e11adafa812c6af96f59a))
+* **token:** fix gh deploy token ([#114](https://github.com/haha1903/logseq-plugin-azure-openai/issues/114)) ([b3f7378](https://github.com/haha1903/logseq-plugin-azure-openai/commit/b3f7378dea6f319115a65f793ee21ba59fdacc50))
+* update lockfile ([1067ca4](https://github.com/haha1903/logseq-plugin-azure-openai/commit/1067ca4c22d5e9e3616cee616567cbf229029be4))
+
+
+### Features
+
+* bump openapi to 4.x and add dall-e-3 support ([#142](https://github.com/haha1903/logseq-plugin-azure-openai/issues/142)) ([6085dca](https://github.com/haha1903/logseq-plugin-azure-openai/commit/6085dcac16d7c1472f142b263fe75857d44414ad))
+* **dalle:** Add support for OpenAI DALL-E ([#49](https://github.com/haha1903/logseq-plugin-azure-openai/issues/49)) ([c9a8adb](https://github.com/haha1903/logseq-plugin-azure-openai/commit/c9a8adb96cd79680f4b0c2d2628835797cfe0e1c))
+* **engine:** support gpt-4 ([#95](https://github.com/haha1903/logseq-plugin-azure-openai/issues/95)) ([49d2e36](https://github.com/haha1903/logseq-plugin-azure-openai/commit/49d2e36d94f6bc0a0400e583a71aadb12c1f398b))
+* **error-handling:** Improve error handling and messaging ([2f33d09](https://github.com/haha1903/logseq-plugin-azure-openai/commit/2f33d09825288cc703855c4b41600204691cc9cf))
+* **gpt-page:** Add gpt-page command to send entire page to gpt3  ([#46](https://github.com/haha1903/logseq-plugin-azure-openai/issues/46)) ([3a84fe0](https://github.com/haha1903/logseq-plugin-azure-openai/commit/3a84fe05344a92bcfe5b2089ec2e38f6e56e4a3d))
+* initial commit # => v1.0.0 on [@latest](https://github.com/latest) ([633ed73](https://github.com/haha1903/logseq-plugin-azure-openai/commit/633ed7349751718618a70efef1a8a80915c158f4))
+* **inject-prefix:** Allows you to add a prefix before generated output ([#62](https://github.com/haha1903/logseq-plugin-azure-openai/issues/62)) ([e62bdf7](https://github.com/haha1903/logseq-plugin-azure-openai/commit/e62bdf72b0bd567e4b6910d8df83fc883ea970c8))
+* **model:** Add ChatGPT API Support ([#84](https://github.com/haha1903/logseq-plugin-azure-openai/issues/84)) ([bff969a](https://github.com/haha1903/logseq-plugin-azure-openai/commit/bff969a322cffe02c6f4a6ae574e103fc8cdb122))
+* **multi-select:** add multi select feature ([#92](https://github.com/haha1903/logseq-plugin-azure-openai/issues/92)) ([51101dd](https://github.com/haha1903/logseq-plugin-azure-openai/commit/51101dd33e486071faf8e8b0031f34128dd10a6d))
+* **settings:** make openai /v1/chat/completion endpoint(basepath) configurable. ([#110](https://github.com/haha1903/logseq-plugin-azure-openai/issues/110)) ([b284838](https://github.com/haha1903/logseq-plugin-azure-openai/commit/b284838d1a56d590de11bc05f649dfb55770ded6))
+* **shortcut:** add keyboard shortcut for gpt-block ([#67](https://github.com/haha1903/logseq-plugin-azure-openai/issues/67)) ([4a6a03b](https://github.com/haha1903/logseq-plugin-azure-openai/commit/4a6a03ba38d97a3e994c5ee8e6a2b9a532d81cd4))
+* **streaming:** make baseurl configuration and add stream output ([#112](https://github.com/haha1903/logseq-plugin-azure-openai/issues/112)) ([2f1182c](https://github.com/haha1903/logseq-plugin-azure-openai/commit/2f1182c54c6cce06250c2af4b4356e803fb3ebb3))
+* **templates:** Allow user to set the temperature for each prompt ([#111](https://github.com/haha1903/logseq-plugin-azure-openai/issues/111)) ([8c05660](https://github.com/haha1903/logseq-plugin-azure-openai/commit/8c05660a296fe4e4d3b662e7923f9617e0b73425))
+* **text-davinci-003:** Make davinci 3 the default ([dd72a75](https://github.com/haha1903/logseq-plugin-azure-openai/commit/dd72a757c5cb12855ab4890946ba81cfae25207c))
+* **whisper:** Whisper speech to text ([#100](https://github.com/haha1903/logseq-plugin-azure-openai/issues/100)) ([563b3b4](https://github.com/haha1903/logseq-plugin-azure-openai/commit/563b3b47ea01f01ce0c771cb59ac0007f56e81b3))
+
 ## [1.14.2](https://github.com/briansunter/logseq-plugin-gpt3-openai/compare/v1.14.1...v1.14.2) (2024-10-09)
 
 
