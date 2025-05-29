@@ -1,8 +1,8 @@
 {
-  "name": "logseq-plugin-gpt3-openai",
-  "author": "Brian Sunter",
+  "name": "logseq-plugin-azure-openai",
+  "author": "Peter C",
   "private": true,
-  "version": "1.14.2",
+  "version": "1.0.0",
   "main": "dist/index.html",
   "scripts": {
     "dev": "vite",
@@ -44,7 +44,7 @@
     "use-immer": "^0.8.1"
   },
   "logseq": {
-    "name": "logseq-plugin-gpt3-openai",
+    "name": "logseq-plugin-azure-openai",
     "id": "_79n711y6e"
   },
   "peerDependencies": {

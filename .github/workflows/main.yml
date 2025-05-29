@@ -3,7 +3,7 @@
 name: Releases
 
 env:
-  PLUGIN_NAME: logseq-plugin-gpt3-openai
+  PLUGIN_NAME: logseq-plugin-azure-openai
 
 # Controls when the action will run.
 on:
