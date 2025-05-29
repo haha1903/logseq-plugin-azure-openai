@@ -9,13 +9,21 @@ export const CommandResult = ({
   toolbar,
 }: PropsWithChildren<CommandResultProps>) => {
   return (
-    <form>
-      <div className="w-full mb-4 border border-gray-200 rounded-lg bg-gray-50 dark:bg-gray-700 dark:border-gray-600">
-        <div className="px-4 py-2 bg-white rounded-t-lg dark:bg-gray-800">
+    <div className="relative">
+      <div className="w-full border border-slate-700/50 rounded-lg bg-slate-800/30 backdrop-blur-sm overflow-hidden">
+        {/* Content Area */}
+        <div className="p-4 bg-slate-800/20">
           {children}
         </div>
-        {toolbar}
+        
+        {/* Toolbar */}
+        <div className="border-t border-slate-700/50 bg-slate-800/40">
+          {toolbar}
+        </div>
       </div>
-    </form>
+      
+      {/* Subtle shadow for depth */}
+      <div className="absolute inset-0 -z-10 bg-gradient-to-b from-transparent to-slate-900/20 rounded-lg transform translate-y-1" />
+    </div>
   );
 };

@@ -6,7 +6,7 @@ import ReactDOM from "react-dom/client";
 import { Command, LogseqAI } from "./ui/LogseqAI";
 import { loadUserCommands, loadBuiltInCommands } from "./lib/prompts";
 import { getOpenaiSettings, settingsSchema } from "./lib/settings";
-import { runDalleBlock, runGptBlock, runGptPage, runWhisper } from "./lib/rawCommands";
+import { runGptBlock, runGptPage } from "./lib/rawCommands";
 import { BlockEntity } from "@logseq/libs/dist/LSPlugin.user";
 import { useImmer } from 'use-immer';
 
@@ -96,7 +96,7 @@ const LogseqApp = () => {
     if (logseq.settings!["popupShortcut"]) {
     logseq.App.registerCommandShortcut(
       {
-        binding: logseq.settings!["popupShortcut"],
+        binding: logseq.settings!["popupShortcut"] as string,
       },
       async () => {
         const activeText = await logseq.Editor.getEditingCursorPosition();
@@ -111,7 +111,7 @@ const LogseqApp = () => {
             };
           });
         } else if (!activeText && !currentPage) {
-          logseq.App.showMsg("Put cursor in block or navigate to specific page to use keyboard shortcut", "warning");
+          logseq.UI.showMsg("Put cursor in block or navigate to specific page to use keyboard shortcut", "warning");
           return;
         } else if (activeText && currentBlock) {
           updateAppState(draft => {
@@ -163,14 +163,10 @@ const LogseqApp = () => {
     logseq.Editor.registerBlockContextMenuItem("gpt-page", runGptPage);
     logseq.Editor.registerSlashCommand("gpt-block", runGptBlock);
     logseq.Editor.registerBlockContextMenuItem("gpt-block", runGptBlock);
-    logseq.Editor.registerSlashCommand("dalle", runDalleBlock);
-    logseq.Editor.registerBlockContextMenuItem("dalle", runDalleBlock);
-    logseq.Editor.registerSlashCommand("whisper", runWhisper);
-    logseq.Editor.registerBlockContextMenuItem("whisper", runWhisper);
 
     if (logseq.settings!["shortcutBlock"]) {
       logseq.App.registerCommandShortcut(
-        { "binding": logseq.settings!["shortcutBlock"] },
+        { "binding": logseq.settings!["shortcutBlock"] as string },
         runGptBlock
       );
     }
@@ -209,7 +205,7 @@ const LogseqApp = () => {
       result = getOpenaiSettings().injectPrefix + result;
     }
     if (appState.selection.type === "singleBlockSelected") {
-      if (appState.selection.block.content.length > 0) {
+      if (appState.selection.block.content && appState.selection.block.content.length > 0) {
         logseq.Editor.insertBlock(appState.selection.block.uuid, result, {
           sibling: false,
         });

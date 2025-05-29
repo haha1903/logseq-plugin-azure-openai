@@ -7,8 +7,8 @@ export const CommandToolbar = ({
   left: ReactElement;
   right: ReactElement;
 }) => (
-  <div className="flex items-center justify-between px-3 py-2 border-t dark:border-gray-600">
-    <div className="flex pl-0 space-x-1 sm:pl-2">{left}</div>
-    <div className="flex pl-0 space-x-1 sm:pl-2">{right}</div>
+  <div className="flex items-center justify-between p-4 bg-slate-800/50">
+    <div className="flex space-x-2">{left}</div>
+    <div className="flex space-x-2">{right}</div>
   </div>
 );
