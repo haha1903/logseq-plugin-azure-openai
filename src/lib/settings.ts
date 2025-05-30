@@ -42,6 +42,15 @@ export const settingsSchema: SettingSchemaDesc[] = [
       "Initial message that tells the model how to answer. See Azure OpenAI documentation for more info.",
   },
   {
+    key: "replacePrompt",
+    type: "string",
+    default:
+      "Please improve and rewrite the following text. Make it clearer, more concise, and better structured while maintaining the original meaning:",
+    title: "Replace Prompt",
+    description:
+      "Initial message for gpt-replace-block function. This prompt will be used when replacing block content.",
+  },
+  {
     key: "openAITemperature",
     type: "number",
     default: 1.0,
@@ -64,7 +73,7 @@ export const settingsSchema: SettingSchemaDesc[] = [
     default: true,
     title: "Use Built-in Prompts",
     description:
-      "Enable the use of built-in prompt templates. When enabled, you can use predefined prompts for common tasks.",
+      "Enable the use of built-in prompt templates.",
   },
   {
     key: "injectPrefix",
@@ -88,6 +97,13 @@ export const settingsSchema: SettingSchemaDesc[] = [
     title: "Keyboard Shortcut for /gpt popup",
     description: "",
   },
+  {
+    key: "shortcutReplaceBlock",
+    type: "string",
+    default: "mod+t",
+    title: "Keyboard Shortcut for /gpt-replace-block",
+    description: "",
+  },
 ];
 
 function unescapeNewlines(s: string) {
@@ -102,10 +118,23 @@ export function getOpenaiSettings(): OpenAIOptions {
   const temperature = Number.parseFloat(logseq.settings!["openAITemperature"] as string);
   const maxTokens = Number.parseInt(logseq.settings!["openAIMaxTokens"] as string);
   const chatPrompt = logseq.settings!["chatPrompt"] as string;
+  const replacePrompt = logseq.settings!["replacePrompt"] as string;
   const apiVersion = logseq.settings!["azureApiVersion"] as string;
   const useBuiltinPrompts = logseq.settings!["useBuiltinPrompts"] as boolean;
   
-  return {
+  const OpenAIDefaults = (apiKey: string): OpenAIOptions => ({
+    apiKey,
+    deploymentName: "gpt-4.1",
+    temperature: 1.0,
+    maxTokens: 1000,
+    useBuiltinPrompts: true,
+    apiVersion: '2025-01-01-preview',
+    resourceName: '',
+    chatPrompt: '',
+    replacePrompt: '',
+  });
+
+  return {...OpenAIDefaults, ...{
     apiKey,
     deploymentName,
     resourceName,
@@ -113,7 +142,8 @@ export function getOpenaiSettings(): OpenAIOptions {
     maxTokens,
     injectPrefix,
     chatPrompt,
+    replacePrompt,
     apiVersion,
     useBuiltinPrompts,
-  };
+  }};
 }

@@ -8,21 +8,12 @@ export interface OpenAIOptions {
   temperature?: number;
   maxTokens?: number;
   useBuiltinPrompts?: boolean;
-  chatPrompt?: string;
+  chatPrompt: string;
+  replacePrompt: string;
   apiVersion?: string;
   resourceName?: string;
   injectPrefix?: string;
 }
-
-const OpenAIDefaults = (apiKey: string): OpenAIOptions => ({
-  apiKey,
-  deploymentName: "gpt-4.1",
-  temperature: 1.0,
-  maxTokens: 1000,
-  useBuiltinPrompts: true,
-  apiVersion: '2025-01-01-preview',
-  resourceName: ''
-});
 
 const retryOptions = {
   numOfAttempts: 7,
@@ -55,15 +46,18 @@ function getAzureUrl(options: OpenAIOptions): string {
   return `https://${options.resourceName}.openai.azure.com/openai/deployments/${options.deploymentName}/chat/completions?api-version=${options.apiVersion}`;
 }
 
-function buildInputMessages(prompt: string, input: string, openAiOptions: OpenAIOptions): { role: string; content: string }[] {
-  const inputMessages: { role: string; content: string }[] = [{ role: "user", content: input }];
-  
-  if (prompt && prompt.length > 0) {
-    inputMessages.unshift({ role: "system", content: prompt });
-  } else if (openAiOptions.chatPrompt && openAiOptions.chatPrompt.length > 0) {
-    inputMessages.unshift({ role: "system", content: openAiOptions.chatPrompt });
+function buildInputMessages(prompt: string, input: string): { role: string; content: string }[] {
+  if (input) {
+    input = input
+      .split('\n')
+      .filter(line => !line.trim().startsWith('logseq.'))
+      .join('\n')
+      .trim();
   }
-  
+
+  const inputMessages: { role: string; content: string }[] = [{ role: "user", content: input }];
+  inputMessages.unshift({ role: "system", content: prompt });
+
   return inputMessages;
 }
 
@@ -110,21 +104,19 @@ export async function openAI(
   input: string,
   openAiOptions: OpenAIOptions
 ): Promise<string | null> {
-  const options = { ...OpenAIDefaults(openAiOptions.apiKey), ...openAiOptions };
 
   try {
-    const inputMessages = buildInputMessages(prompt, input, openAiOptions);
-    const url = getAzureUrl(options);
-    console.log(url);
+    const inputMessages = buildInputMessages(prompt, input);
+    const url = getAzureUrl(openAiOptions);
     
     const response = await backOff(
       () => fetch(url, {
         method: 'POST',
         headers: {
-          'api-key': options.apiKey,
+          'api-key': openAiOptions.apiKey,
           'Content-Type': 'application/json',
         },
-        body: createRequestBody(inputMessages, options),
+        body: createRequestBody(inputMessages, openAiOptions),
       }),
       retryOptions
     );
@@ -147,21 +139,19 @@ export async function openAIWithStream(
   onContent: (content: string) => void,
   onStop: () => void
 ): Promise<string | null> {
-  const options = { ...OpenAIDefaults(openAiOptions.apiKey), ...openAiOptions };
-
   try {
-    const inputMessages = buildInputMessages(prompt, input, openAiOptions);
-    const url = getAzureUrl(options);
+    const inputMessages = buildInputMessages(prompt, input);
+    const url = getAzureUrl(openAiOptions);
     
     const response = await backOff(
       () => fetch(url, {
         method: 'POST',
         headers: {
-          'api-key': options.apiKey,
+          'api-key': openAiOptions.apiKey,
           'Content-Type': 'application/json',
           'Accept': 'text/event-stream',
         },
-        body: createRequestBody(inputMessages, options, true),
+        body: createRequestBody(inputMessages, openAiOptions, true),
       }).then((response) => {
         if (response.ok && response.body) {
           const reader = response.body.pipeThrough(new TextDecoderStream()).getReader();
