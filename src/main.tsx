@@ -173,7 +173,9 @@ const LogseqApp = () => {
   }, []);
 
 
-  const allCommands = [...builtInCommands, ...userCommands];
+  const allCommands = getOpenaiSettings().useBuiltinPrompts 
+    ? [...builtInCommands, ...userCommands] 
+    : [...userCommands];
 
   const handleCommand = async (command: Command, onContent: (content: string) => void): Promise<string> => {
     let inputText;
@@ -190,7 +192,7 @@ const LogseqApp = () => {
     if (command.temperature!=null && !Number.isNaN(command.temperature)) {
       openAISettings.temperature = command.temperature;
     }
-    const response = await openAIWithStream(command.prompt + inputText, openAISettings, onContent, () => {
+    const response = await openAIWithStream(command.prompt, inputText!, openAISettings, onContent, () => {
     });
     if (response) {
       return response;

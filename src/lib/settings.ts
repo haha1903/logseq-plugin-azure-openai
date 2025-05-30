@@ -1,10 +1,6 @@
 import { SettingSchemaDesc } from "@logseq/libs/dist/LSPlugin";
 import { OpenAIOptions } from "./openai";
 
-interface PluginOptions extends OpenAIOptions {
-  injectPrefix?: string;
-}
-
 export const settingsSchema: SettingSchemaDesc[] = [
   {
     key: "azureApiKey",
@@ -57,10 +53,18 @@ export const settingsSchema: SettingSchemaDesc[] = [
   {
     key: "openAIMaxTokens",
     type: "number",
-    default: 4000,
+    default: 128000,
     title: "Max Tokens",
     description:
       "The maximum amount of tokens to generate. Tokens can be words or just chunks of characters. The number of tokens processed in a given API request depends on the length of both your inputs and outputs. As a rough rule of thumb, 1 token is approximately 4 characters or 0.75 words for English text. One limitation to keep in mind is that your text prompt and generated completion combined must be no more than the model's maximum context length.",
+  },
+  {
+    key: "useBuiltinPrompts",
+    type: "boolean",
+    default: true,
+    title: "Use Built-in Prompts",
+    description:
+      "Enable the use of built-in prompt templates. When enabled, you can use predefined prompts for common tasks.",
   },
   {
     key: "injectPrefix",
@@ -68,7 +72,7 @@ export const settingsSchema: SettingSchemaDesc[] = [
     default: "",
     title: "Output prefix",
     description:
-      "Prepends the output with this string. Such as a tag like [[gpt3]] or markdown like > to blockquote. Add a space at the end if you want a space between the prefix and the output or \\n for a linebreak.",
+      "Prepends the output with this string. Such as a tag like [[gpt]] or markdown like > to blockquote. Add a space at the end if you want a space between the prefix and the output or \\n for a linebreak.",
   },
   {
     key: "shortcutBlock",
@@ -90,7 +94,7 @@ function unescapeNewlines(s: string) {
   return s.replace(/\\n/g, "\n");
 }
 
-export function getOpenaiSettings(): PluginOptions {
+export function getOpenaiSettings(): OpenAIOptions {
   const apiKey = logseq.settings!["azureApiKey"] as string;
   const deploymentName = logseq.settings!["azureDeploymentName"] as string;
   const resourceName = logseq.settings!["azureResourceName"] as string;
@@ -99,6 +103,7 @@ export function getOpenaiSettings(): PluginOptions {
   const maxTokens = Number.parseInt(logseq.settings!["openAIMaxTokens"] as string);
   const chatPrompt = logseq.settings!["chatPrompt"] as string;
   const apiVersion = logseq.settings!["azureApiVersion"] as string;
+  const useBuiltinPrompts = logseq.settings!["useBuiltinPrompts"] as boolean;
   
   return {
     apiKey,
@@ -109,5 +114,6 @@ export function getOpenaiSettings(): PluginOptions {
     injectPrefix,
     chatPrompt,
     apiVersion,
+    useBuiltinPrompts,
   };
 }
