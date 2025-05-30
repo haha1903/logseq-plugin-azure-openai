@@ -64,7 +64,7 @@ export const settingsSchema: SettingSchemaDesc[] = [
     default: true,
     title: "Use Built-in Prompts",
     description:
-      "Enable the use of built-in prompt templates. When enabled, you can use predefined prompts for common tasks.",
+      "Enable the use of built-in prompt templates.",
   },
   {
     key: "injectPrefix",

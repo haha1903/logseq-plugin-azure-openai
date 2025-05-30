@@ -53,7 +53,6 @@ function validateSettings(settings: OpenAIOptions) {
 }
 
 export async function runGptBlock(b: IHookEvent) {
-  console.log("runGptBlock", b);
   const openAISettings = getOpenaiSettings();
   validateSettings(openAISettings);
 
@@ -79,7 +78,7 @@ export async function runGptBlock(b: IHookEvent) {
       result = openAISettings.injectPrefix + result;
     }
 
-    await openAIWithStream("", currentBlock.content, openAISettings,  async (content: string) => {
+    await openAIWithStream(openAISettings.chatPrompt!, currentBlock.content, openAISettings,  async (content: string) => {
       result += content || "";
       if(null != insertBlock) {
          await logseq.Editor.updateBlock(insertBlock.uuid, result);
@@ -126,7 +125,7 @@ export async function runGptPage(b: IHookEvent) {
       result = openAISettings.injectPrefix + result;
     }
 
-    await openAIWithStream("", pageContents, openAISettings,  async (content: string) => {
+    await openAIWithStream(openAISettings.chatPrompt!, pageContents, openAISettings,  async (content: string) => {
       result += content || "";
       if(null != insertBlock) {
         await logseq.Editor.updateBlock(insertBlock.uuid, result);

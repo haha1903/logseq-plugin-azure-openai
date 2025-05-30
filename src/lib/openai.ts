@@ -57,13 +57,8 @@ function getAzureUrl(options: OpenAIOptions): string {
 
 function buildInputMessages(prompt: string, input: string, openAiOptions: OpenAIOptions): { role: string; content: string }[] {
   const inputMessages: { role: string; content: string }[] = [{ role: "user", content: input }];
-  
-  if (prompt && prompt.length > 0) {
-    inputMessages.unshift({ role: "system", content: prompt });
-  } else if (openAiOptions.chatPrompt && openAiOptions.chatPrompt.length > 0) {
-    inputMessages.unshift({ role: "system", content: openAiOptions.chatPrompt });
-  }
-  
+  inputMessages.unshift({ role: "system", content: prompt });
+
   return inputMessages;
 }
 
