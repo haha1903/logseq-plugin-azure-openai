@@ -140,3 +140,40 @@ export async function runGptPage(b: IHookEvent) {
     handleOpenAIError(e);
   }
 }
+
+export async function replaceGptBlock(b: IHookEvent) {
+  const openAISettings = getOpenaiSettings();
+  validateSettings(openAISettings);
+
+  const currentBlock = await logseq.Editor.getBlock(b.uuid);
+  if (!currentBlock) {
+    console.error("No current block");
+    return;
+  }
+
+  if (!currentBlock.content || currentBlock.content.trim().length === 0) {
+    logseq.UI.showMsg("Empty Content", "warning");
+    console.warn("Blank page");
+    return;
+  }
+
+  try {
+    let result = "";
+    
+    if(openAISettings.injectPrefix && result.length == 0) {
+      result = openAISettings.injectPrefix + result;
+    }
+
+    await openAIWithStream(openAISettings.chatPrompt!, currentBlock.content, openAISettings,  async (content: string) => {
+      result += content || "";
+      await logseq.Editor.updateBlock(currentBlock.uuid, result);
+    }, () => {});
+
+    if (!result) {
+      logseq.UI.showMsg("No OpenAI content" , "warning");
+      return;
+    }
+  } catch (e: any) {
+    handleOpenAIError(e);
+  }
+}

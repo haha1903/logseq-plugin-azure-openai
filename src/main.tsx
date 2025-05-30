@@ -6,7 +6,7 @@ import ReactDOM from "react-dom/client";
 import { Command, LogseqAI } from "./ui/LogseqAI";
 import { loadUserCommands, loadBuiltInCommands } from "./lib/prompts";
 import { getOpenaiSettings, settingsSchema } from "./lib/settings";
-import { runGptBlock, runGptPage } from "./lib/rawCommands";
+import { runGptBlock, runGptPage, replaceGptBlock } from "./lib/rawCommands";
 import { BlockEntity } from "@logseq/libs/dist/LSPlugin.user";
 import { useImmer } from 'use-immer';
 
@@ -163,6 +163,8 @@ const LogseqApp = () => {
     logseq.Editor.registerBlockContextMenuItem("gpt-page", runGptPage);
     logseq.Editor.registerSlashCommand("gpt-block", runGptBlock);
     logseq.Editor.registerBlockContextMenuItem("gpt-block", runGptBlock);
+    logseq.Editor.registerSlashCommand("gpt-replace-block", replaceGptBlock);
+    logseq.Editor.registerBlockContextMenuItem("gpt-replace-block", replaceGptBlock);
 
     if (logseq.settings!["shortcutBlock"]) {
       logseq.App.registerCommandShortcut(
