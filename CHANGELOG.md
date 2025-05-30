@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/haha1903/logseq-plugin-azure-openai/compare/v1.0.0...v1.1.0) (2025-05-30)
+
+
+### Features
+
+* filter logseq lines, add OpenAI built-in prompts, add markdown/raw views for SuccessResult ([#2](https://github.com/haha1903/logseq-plugin-azure-openai/issues/2)) ([2995a56](https://github.com/haha1903/logseq-plugin-azure-openai/commit/2995a56b9920ff50d746d5b62674cf99fde5c1cc))
+
 # 1.0.0 (2025-05-29)
 
 
