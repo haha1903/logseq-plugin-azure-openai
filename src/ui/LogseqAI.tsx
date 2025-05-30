@@ -111,7 +111,7 @@ export const LogseqAI = ({
         className="max-h-96 overflow-y-auto scrollbar-hide"
         static
       >
-        <div className="p-2">
+        <div className="px-6 py-4">
           <CommandOptions commands={commandQuery.query(query)} />
         </div>
       </Combobox.Options>
@@ -204,7 +204,7 @@ export const LogseqAI = ({
         </Transition.Child>
 
         <div className="fixed inset-0 overflow-y-auto">
-          <div className="flex min-h-full items-center justify-center p-4 text-center">
+          <div className="flex min-h-full items-center justify-center p-4">
             <Transition.Child
               as={Fragment}
               enter="ease-out duration-300"
@@ -215,7 +215,7 @@ export const LogseqAI = ({
               leaveTo="opacity-0 scale-95"
             >
               <Dialog.Panel className="w-full max-w-2xl transform overflow-hidden rounded-2xl bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 border border-slate-700/50 shadow-2xl transition-all backdrop-blur-xl">
-                <div className="relative">
+                <div className="relative text-left">
                   {/* Header with gradient and glow effect */}
                   <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-blue-400/60 to-transparent" />
                   
