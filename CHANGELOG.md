@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/haha1903/logseq-plugin-azure-openai/compare/v1.1.0...v1.2.0) (2025-05-30)
+
+
+### Features
+
+* add replacePrompt support and shortcut for gpt-replace-block ([3d25aac](https://github.com/haha1903/logseq-plugin-azure-openai/commit/3d25aac22a809ee1df72b931fae7d4c8629b24f7))
+
 # [1.1.0](https://github.com/haha1903/logseq-plugin-azure-openai/compare/v1.0.0...v1.1.0) (2025-05-30)
 
 
