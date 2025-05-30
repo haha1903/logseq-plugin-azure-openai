@@ -187,6 +187,14 @@ const LogseqApp = () => {
       inputText = "";
     }
 
+    if (inputText) {
+      inputText = inputText
+        .split('\n')
+        .filter(line => !line.trim().startsWith('logseq.'))
+        .join('\n')
+        .trim();
+    }
+
     const openAISettings = getOpenaiSettings();
     // Set temperature of command instead of global temperature
     if (command.temperature!=null && !Number.isNaN(command.temperature)) {
