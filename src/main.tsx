@@ -172,6 +172,13 @@ const LogseqApp = () => {
         runGptBlock
       );
     }
+
+    if (logseq.settings!["shortcutReplaceBlock"]) {
+      logseq.App.registerCommandShortcut(
+        { "binding": logseq.settings!["shortcutReplaceBlock"] as string },
+        replaceGptBlock
+      );
+    }
   }, []);
 
 
@@ -187,14 +194,6 @@ const LogseqApp = () => {
       inputText = appState.selection.blocks.map(b => b.content).join("\n");
     } else {
       inputText = "";
-    }
-
-    if (inputText) {
-      inputText = inputText
-        .split('\n')
-        .filter(line => !line.trim().startsWith('logseq.'))
-        .join('\n')
-        .trim();
     }
 
     const openAISettings = getOpenaiSettings();

@@ -164,7 +164,7 @@ export async function replaceGptBlock(b: IHookEvent) {
       result = openAISettings.injectPrefix + result;
     }
 
-    await openAIWithStream(openAISettings.chatPrompt!, currentBlock.content, openAISettings,  async (content: string) => {
+    await openAIWithStream(openAISettings.replacePrompt!, currentBlock.content, openAISettings,  async (content: string) => {
       result += content || "";
       await logseq.Editor.updateBlock(currentBlock.uuid, result);
     }, () => {});
