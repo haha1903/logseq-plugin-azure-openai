@@ -55,7 +55,7 @@ function getAzureUrl(options: OpenAIOptions): string {
   return `https://${options.resourceName}.openai.azure.com/openai/deployments/${options.deploymentName}/chat/completions?api-version=${options.apiVersion}`;
 }
 
-function buildInputMessages(prompt: string, input: string, openAiOptions: OpenAIOptions): { role: string; content: string }[] {
+function buildInputMessages(prompt: string, input: string): { role: string; content: string }[] {
   const inputMessages: { role: string; content: string }[] = [{ role: "user", content: input }];
   inputMessages.unshift({ role: "system", content: prompt });
 
@@ -108,9 +108,8 @@ export async function openAI(
   const options = { ...OpenAIDefaults(openAiOptions.apiKey), ...openAiOptions };
 
   try {
-    const inputMessages = buildInputMessages(prompt, input, openAiOptions);
+    const inputMessages = buildInputMessages(prompt, input);
     const url = getAzureUrl(options);
-    console.log(url);
     
     const response = await backOff(
       () => fetch(url, {
@@ -145,7 +144,7 @@ export async function openAIWithStream(
   const options = { ...OpenAIDefaults(openAiOptions.apiKey), ...openAiOptions };
 
   try {
-    const inputMessages = buildInputMessages(prompt, input, openAiOptions);
+    const inputMessages = buildInputMessages(prompt, input);
     const url = getAzureUrl(options);
     
     const response = await backOff(
