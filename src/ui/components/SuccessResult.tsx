@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef, useMemo } from "react";
+import { useState, useCallback, useRef, useMemo, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
@@ -11,19 +11,28 @@ export const SuccessResult = ({
 }) => {
   const [viewMode, setViewMode] = useState<'markdown' | 'raw'>('markdown');
   const contentRef = useRef<HTMLDivElement>(null);
+  const lastSelectionRef = useRef<string>('');
 
   const checkSelection = useCallback(() => {
+    if (viewMode === 'raw') return; // Raw mode uses onSelect event
+    
     const selection = window.getSelection();
     const container = contentRef.current;
     
     if (!selection || !container || selection.rangeCount === 0) {
-      onSelectionChange?.('');
+      if (lastSelectionRef.current !== '') {
+        lastSelectionRef.current = '';
+        onSelectionChange?.('');
+      }
       return;
     }
 
     const selectedText = selection.toString().trim();
     if (!selectedText) {
-      onSelectionChange?.('');
+      if (lastSelectionRef.current !== '') {
+        lastSelectionRef.current = '';
+        onSelectionChange?.('');
+      }
       return;
     }
 
@@ -42,26 +51,45 @@ export const SuccessResult = ({
       );
       
       if (isStartInContainer && isEndInContainer) {
-        onSelectionChange?.(selectedText);
+        if (selectedText !== lastSelectionRef.current) {
+          lastSelectionRef.current = selectedText;
+          onSelectionChange?.(selectedText);
+        }
       } else {
-        onSelectionChange?.('');
+        if (lastSelectionRef.current !== '') {
+          lastSelectionRef.current = '';
+          onSelectionChange?.('');
+        }
       }
     } catch (e) {
       // Fallback: if range operations fail, clear selection
-      onSelectionChange?.('');
+      if (lastSelectionRef.current !== '') {
+        lastSelectionRef.current = '';
+        onSelectionChange?.('');
+      }
     }
-  }, [onSelectionChange]);
-
-  const handleMouseUp = useCallback(() => {
-    // Small delay to ensure selection is finalized
-    setTimeout(checkSelection, 10);
-  }, [checkSelection]);
+  }, [onSelectionChange, viewMode]);
 
   const handleTextAreaSelect = useCallback((e: React.SyntheticEvent<HTMLTextAreaElement>) => {
     const textarea = e.target as HTMLTextAreaElement;
     const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd).trim();
-    onSelectionChange?.(selectedText);
+    if (selectedText !== lastSelectionRef.current) {
+      lastSelectionRef.current = selectedText;
+      onSelectionChange?.(selectedText);
+    }
   }, [onSelectionChange]);
+
+  // Use the native selectionchange event for preview mode
+  useEffect(() => {
+    if (viewMode === 'markdown') {
+      document.addEventListener('selectionchange', checkSelection);
+      return () => {
+        document.removeEventListener('selectionchange', checkSelection);
+      };
+    }
+    // 明确返回 undefined 以满足 TypeScript
+    return undefined;
+  }, [checkSelection, viewMode]);
 
   // Memoize ReactMarkdown components to prevent unnecessary re-renders
   const markdownComponents = useMemo(() => ({
@@ -132,7 +160,6 @@ export const SuccessResult = ({
       
       <div 
         ref={contentRef}
-        onMouseUp={handleMouseUp}
         style={{ 
           userSelect: 'text', 
           WebkitUserSelect: 'text',
