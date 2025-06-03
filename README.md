@@ -31,7 +31,67 @@ Special thanks to **Brian Sunter** for his outstanding contribution to the Logse
 
 ---
 
-# Usage
+## 📚 Table of Contents
+
+- [🚀 Quick Start](#-quick-start)
+- [💡 Features](#-features)
+- [📖 Usage Guide](#-usage-guide)
+  - [`gpt` Command](#gpt)
+  - [`gpt-block` Command](#gpt-block)
+  - [`gpt-replace-block` Command](#gpt-replace-block)
+  - [`gpt-page` Command](#gpt-page)
+- [⚙️ Configuration](#️-configuration)
+- [📝 Examples](#-examples)
+- [❓ FAQ & Troubleshooting](#-faq--troubleshooting)
+- [🛠️ Development](#️-development)
+- [🤝 Contributing](#-contributing)
+
+---
+
+## 🚀 Quick Start
+
+### Step 1: Install the Plugin
+Download the plugin in the Logseq marketplace by searching for `azure openai`.
+
+### Step 2: Get Azure OpenAI Credentials
+You'll need:
+- An Azure OpenAI resource with a deployed model
+- API key from your Azure OpenAI resource
+- Your Azure OpenAI resource name
+- Your Azure OpenAI deployment name
+
+### Step 3: Configure the Plugin
+1. Go to Logseq Settings → Plugins → Azure OpenAI
+2. Fill in the required fields:
+   ```
+   Azure OpenAI API Key: your-api-key-here
+   Resource Name: myresource (from https://myresource.openai.azure.com/)
+   Deployment Name: gpt-4 (your deployed model name)
+   API Version: 2025-01-01-preview (default)
+   ```
+
+### Step 4: Start Using
+- Press `Cmd+G` (Mac) or `Ctrl+G` (Windows/Linux) to open the GPT popup
+- Or type `/gpt` in any block
+
+**⚠️ Important**: Always verify AI-generated content before using it. Azure OpenAI can sometimes produce subtly incorrect information.
+
+---
+
+## 💡 Features
+
+- **🎯 Smart Context Awareness**: Automatically uses selected blocks as context for AI prompts
+- **📝 Multiple Output Options**: Insert, replace, or selectively replace generated content
+- **🎨 Rich Preview**: Markdown rendering with preview and raw modes
+- **⚡ Streaming Responses**: Real-time AI response generation
+- **🔧 Custom Templates**: Create and use your own prompt templates
+- **🌐 Multi-language Support**: Configure AI to respond in different languages
+- **🎛️ Flexible Commands**: Block-level, page-level, and replacement operations
+- **🔒 Enterprise Ready**: Built for Azure OpenAI with enterprise security
+
+---
+
+## 📖 Usage Guide
 
 ##  `gpt`
 
@@ -149,66 +209,86 @@ Use the `Output prefix` options in the setting to set the prefix. You can add a 
 
 Write a prompt in a block, then run the `/gpt` command via the slash or block menu. The plugin will generate an Azure OpenAI response and insert it below. It removes leading and trailing whitespace from the prompt.
 
-## Getting Started <a name = "getting_started"></a>
+## ⚙️ Configuration
 
-### Prerequisites
+### Azure OpenAI Setup Guide
 
-- You need an Azure OpenAI resource with a deployed model
-- An API key from your Azure OpenAI resource
-- Your Azure OpenAI resource name
-- Your Azure OpenAI deployment name
+#### Step 1: Create Azure OpenAI Resource
+1. Go to [Azure Portal](https://portal.azure.com)
+2. Create a new Azure OpenAI resource
+3. Deploy a model (recommended: GPT-4 or GPT-3.5-turbo)
+4. Note down your:
+   - **API Key** (found in Keys and Endpoint section)
+   - **Endpoint URL** (e.g., `https://myresource.openai.azure.com/`)
+   - **Deployment Name** (the name you gave to your deployed model)
 
-### Configuration
+#### Step 2: Plugin Configuration
+Navigate to: **Logseq Settings → Plugins → Azure OpenAI**
 
-After installing the plugin, you need to configure the following settings:
+| Setting | Description | Example |
+|---------|-------------|---------|
+| **API Key** | Your Azure OpenAI API key | `abc123...` |
+| **Resource Name** | Subdomain from your endpoint URL | `myresource` |
+| **Deployment Name** | Your model deployment name | `gpt-4` |
+| **API Version** | Azure OpenAI API version | `2025-01-01-preview` |
+| **Temperature** | Response creativity (0.0-2.0) | `0.7` |
+| **Max Tokens** | Maximum response length | `2000` |
 
-- **Azure OpenAI API Key**: Your Azure OpenAI API key from your Azure portal
-- **Azure OpenAI Resource Name**: The subdomain of your Azure OpenAI endpoint (e.g., if your endpoint is `https://myresource.openai.azure.com/`, then your resource name is `myresource`)
-- **Azure OpenAI Deployment Name**: The name of your model deployment (default: `gpt-4.1`)
-- **Azure OpenAI API Version**: The API version to use (default: `2025-01-01-preview`)
+#### Step 3: Verify Setup
+1. Open any Logseq page
+2. Press `Cmd+G` (Mac) or `Ctrl+G` (Windows/Linux)
+3. Type a simple prompt like "Hello, can you help me?"
+4. If configured correctly, you should see an AI response
 
-### Model Support
-
-The plugin is configured to work with Azure OpenAI's GPT models. The default deployment name is set to `gpt-4.1`, but you can change this to match your Azure OpenAI deployment.
-
-### Installing
-
-Download the plugin in the Logseq marketplace by searching for `azure openai`.
+### Supported Models
+- GPT-4 (recommended)
+- GPT-4 Turbo
+- GPT-3.5-turbo
+- Any Azure OpenAI deployed model
 
 ## ⚠️ Warning ⚠️
 
 Azure OpenAI has limitations. It sometimes produces output that is subtly wrong or misleading. Don't rely on its output without verifying it yourself. Use it with caution.
 
-## Example Use Cases <a name = "examples"></a>
+## 📝 Examples
 
-### Summarizing or explaining a block of text
-Use the built-in "Summarize" template or create a custom prompt like "Summarize the following text:"
+### 📚 Academic & Learning
+- **Summarize**: `Summarize the following text in 3 bullet points:`
+- **Study Plans**: `Create a 4-week study plan for learning Python programming`
+- **Flashcards**: `Create flashcards for the following content:`
+- **Q&A Generation**: `Generate 5 study questions based on this text:`
 
-### Creating bullet point outlines for a given topic
-Use prompts like "Create an outline for:" followed by your topic.
+### 💼 Professional & Productivity
+- **Meeting Notes**: `Convert these meeting notes into action items:`
+- **Email Drafts**: `Write a professional email about:`
+- **Project Planning**: `Create a project timeline for:`
+- **Documentation**: `Write technical documentation for this code:`
 
-### Creating study plan for a given topic
-Ask "Create a study plan for learning:" followed by your subject.
+### ✍️ Writing & Content
+- **Grammar Check**: `Improve the grammar and clarity of this text:`
+- **Translation**: `Translate the following to Spanish:`
+- **Tone Adjustment**: `Rewrite this in a more formal tone:`
+- **Content Ideas**: `Generate 10 blog post ideas about:`
 
-### Write a travel itinerary
-Use prompts like "Create a travel itinerary for a trip to:"
+### 🔍 Analysis & Research
+- **Data Tables**: `Convert this unstructured data into a table:`
+- **Key Points**: `Extract the most important ideas from:`
+- **Objections**: `List potential objections to these arguments:`
+- **Comparisons**: `Compare and contrast these concepts:`
 
-### Explain how to do something
-Ask "How do I:" followed by your question.
+### 💻 Development & Technical
+- **Code Generation**: `Write a Python function that:`
+- **Code Review**: `Review this code and suggest improvements:`
+- **Documentation**: `Write API documentation for:`
+- **Debugging**: `Help me debug this error:`
 
-### Parse tabular data from plain english
-Convert unstructured data into tables by prompting "Convert the following to a table:"
-
-- Generate code to do a given task
-- Correct grammar
-- Translate into other languages
-- Classification and keyword tagging of text
-- Generate lists of given topics
-  - `List 10 top selling science fiction books`
-- Write about a given topic
-  - `Write a tagline for an ice cream shop.`
-- Answer Questions
-  - `Q: How does a telescope work?`
+### 🎯 Quick Examples
+```
+List 10 innovative startup ideas in renewable energy
+Write a compelling tagline for a plant-based restaurant
+Explain quantum computing to a 12-year-old
+Create a workout plan for busy professionals
+```
 
 ## Settings <a name = "settings"></a>
 
@@ -225,82 +305,201 @@ The plugin provides several configurable settings:
 - **Replace Block Prompt**: Custom prompt specifically for the `gpt-replace-block` command
 - **Keyboard Shortcuts**: Customizable shortcuts for different commands (including `gpt-replace-block`)
 
-## FAQ <a name = "faq"></a>
+## ❓ FAQ & Troubleshooting
 
-### What is Azure OpenAI?
+### General Questions
 
+#### What is Azure OpenAI?
 Azure OpenAI Service provides REST API access to OpenAI's powerful language models including GPT-4, GPT-3.5-turbo, and the Codex series. It's Microsoft's cloud-based implementation of OpenAI models with enterprise-grade security and compliance.
 
-### Errors
+#### How is this different from regular OpenAI?
+- **Enterprise Security**: Better data protection and compliance
+- **Regional Availability**: Deploy in specific Azure regions
+- **SLA Guarantees**: Enterprise-grade service level agreements
+- **Integration**: Seamless integration with other Azure services
 
-#### Azure OpenAI Quota Reached
+#### What models are supported?
+All Azure OpenAI deployed models including:
+- GPT-4 (recommended)
+- GPT-4 Turbo
+- GPT-3.5-turbo
+- Future Azure OpenAI models
 
-Your Azure OpenAI resource has reached its quota limit. Check your Azure portal for usage and quotas.
+### Common Issues & Solutions
 
-#### `Azure OpenAI Rate Limited`
+#### ❌ "Invalid API Key" Error
+**Symptoms**: Plugin doesn't respond or shows authentication error
+**Solutions**:
+1. Verify your API key in Azure Portal → OpenAI → Keys and Endpoint
+2. Make sure you copied the entire key without extra spaces
+3. Try regenerating the key in Azure Portal
 
-Azure OpenAI has limits on how often you can call the API. If you get this error, you'll need to wait a bit before trying again. Check your Azure OpenAI resource for rate limits.
+#### ❌ "Model not available" Error
+**Symptoms**: Error message about model not found
+**Solutions**:
+1. Check your deployment name in Azure Portal → OpenAI → Deployments
+2. Ensure the model is successfully deployed (status: Succeeded)
+3. Verify the deployment name matches exactly (case-sensitive)
 
-#### `Model not available`
+#### ❌ "Azure OpenAI Rate Limited"
+**Symptoms**: Requests failing with rate limit messages
+**Solutions**:
+1. Wait 1-2 minutes before trying again
+2. Check your quota usage in Azure Portal
+3. Consider upgrading your Azure OpenAI tier
+4. Reduce request frequency
 
-You may have mistyped the deployment name, or your Azure OpenAI resource doesn't have the specified model deployed.
+#### ❌ "Azure OpenAI Quota Reached"
+**Symptoms**: No responses generated, quota error messages
+**Solutions**:
+1. Check usage in Azure Portal → OpenAI → Quotas
+2. Wait for quota reset (usually monthly)
+3. Request quota increase in Azure Portal
+4. Consider multiple Azure regions
 
-### Debugging
+#### ❌ Plugin Not Responding
+**Symptoms**: No popup appears or commands don't work
+**Solutions**:
+1. Restart Logseq
+2. Disable and re-enable the plugin
+3. Check if plugin is properly installed and enabled
+4. Verify keyboard shortcuts in settings
 
-- Open the developer tools (Menu -> View -> Toggle Developer tools)
-- Check the console logs for error messages
-- Verify your Azure OpenAI configuration in the plugin settings
-- Ensure your Azure OpenAI resource is properly deployed and accessible
+### Performance Optimization
 
-## 💻 Local Development
+#### Making Responses Faster
+- Use shorter prompts when possible
+- Reduce max tokens setting for quicker responses
+- Consider using GPT-3.5-turbo for faster (but less capable) responses
 
-This enables the local dev server with hot reloading, via the logseq vite plugin.
+#### Reducing Costs
+- Set appropriate max tokens limits
+- Use temperature settings wisely (lower = more deterministic, less creative)
+- Monitor usage in Azure Portal regularly
 
-```bash
-pnpm i
-pnpm run dev
-```
+### Debugging Steps
 
-### Prod build
+1. **Check Console Logs**:
+   - Open Developer Tools: `Menu → View → Toggle Developer Tools`
+   - Look for error messages in the Console tab
 
-First run `pnpm i` and `pnpm run build`
+2. **Verify Configuration**:
+   - Settings → Plugins → Azure OpenAI
+   - Test with a simple prompt
 
-Open LogSeq
+3. **Test Azure Connection**:
+   - Use Azure Portal to test your endpoint directly
+   - Verify your resource is active and deployed
 
-Go to Settings > Turn on Developer Mode
+4. **Common Configuration Mistakes**:
+   ```
+   ❌ Wrong: https://myresource.openai.azure.com/
+   ✅ Correct: myresource
+   
+   ❌ Wrong: gpt-4-32k (if not deployed)
+   ✅ Correct: gpt-4 (your actual deployment name)
+   ```
 
-This will bring up the "Plugins" entry in three dots more menu list on the top right of the header bar. Go to Plugins page, and you will get a button with the `Load unpacked plugin` label. Select the root folder of this plugin repo.
+### Need More Help?
 
-Make sure you configure your Azure OpenAI settings as described above.
+1. 📖 Check the [Azure OpenAI Documentation](https://docs.microsoft.com/en-us/azure/cognitive-services/openai/)
+2. 🐛 [Open an Issue](https://github.com/haha1903/logseq-plugin-azure-openai/issues) with:
+   - Your configuration (without API key)
+   - Error messages from console
+   - Steps to reproduce the problem
+3. 💬 Join the Logseq Discord community for general help
 
-## Build <a name="usage"></a>
+## 🛠️ Development
+
+### Prerequisites
+- Node.js 16+
+- pnpm (recommended) or npm
+- Logseq installed
+
+### Local Development Setup
+
+1. **Clone and Install**
+   ```bash
+   git clone https://github.com/haha1903/logseq-plugin-azure-openai.git
+   cd logseq-plugin-azure-openai
+   pnpm install
+   ```
+
+2. **Start Development Server**
+   ```bash
+   pnpm run dev
+   ```
+   This enables hot reloading via the Logseq Vite plugin.
+
+3. **Load in Logseq**
+   - Open Logseq
+   - Go to Settings → Turn on Developer Mode
+   - Navigate to Plugins → Load unpacked plugin
+   - Select the root folder of this plugin repo
+   - Configure your Azure OpenAI settings
+
+### Building for Production
 
 ```bash
 pnpm run build
 ```
 
-## 🚀 Deployment <a name = "deployment"></a>
+### Project Structure
+```
+├── src/
+│   ├── components/     # UI components
+│   ├── services/       # Azure OpenAI integration
+│   ├── types/          # TypeScript types
+│   └── utils/          # Helper functions
+├── public/             # Static assets
+└── dist/              # Built plugin files
+```
 
-Creates a build using semantic release when a commit is pushed with a smart commit message.
+### Tech Stack
+- **🌐 Frontend**: TypeScript, React, Vite
+- **🎨 UI**: Tailwind CSS, Radix UI components
+- **🔧 Build**: Vite, ESBuild
+- **📱 Platform**: Logseq Plugin API
+- **☁️ API**: Azure OpenAI REST API
 
-## Built Using <a name = "built_using"></a>
+### Deployment
+Automatic deployment via GitHub Actions using semantic-release when commits follow conventional commit format.
 
-- [LogSeq](https://logseq.com/) - Privacy-first, open-source knowledge base that works on top of local plain-text Markdown and Org-mode files
-- [Vite](https://vitejs.dev/) - Next Generation Frontend Tooling
-- [Azure OpenAI](https://azure.microsoft.com/en-us/products/ai-services/openai-service) - Microsoft's cloud-based OpenAI service
+## 🤝 Contributing
 
-## Contributing <a name = "contributing"></a>
+We welcome contributions! Here's how you can help:
 
-Do you have a bug or idea? I would love to hear from you! [Open a GitHub issue here.](https://github.com/logseq-plugin-azure-openai/issues/new)
+### Reporting Issues
+🐛 [Open an issue](https://github.com/haha1903/logseq-plugin-azure-openai/issues/new) with:
+- Clear description of the problem
+- Steps to reproduce
+- Your environment (OS, Logseq version, plugin version)
+- Console error messages (if any)
 
-PRs welcome. [Open an issue](https://github.com/logseq-plugin-azure-openai/issues/new) to discuss first if possible.
+### Submitting PRs
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes with clear commit messages
+4. Add tests if applicable
+5. Ensure code passes linting: `pnpm run lint`
+6. Submit a pull request
 
-## Authors <a name = "authors"></a>
+### Development Guidelines
+- Follow TypeScript best practices
+- Use functional components and hooks
+- Write clear, descriptive commit messages
+- Add JSDoc comments for complex functions
+- Test your changes thoroughly
 
-- [@Peter C](https://github.com/peter-c) - Author
+## 👥 Authors & Contributors
 
-## Acknowledgements <a name = "acknowledgement"></a>
+- **[@haha1903](https://github.com/haha1903)** - Original Azure OpenAI adaptation
+- **[@briansunter](https://github.com/briansunter)** - Original GPT-3 plugin foundation
 
-- [Azure OpenAI Service](https://azure.microsoft.com/en-us/products/ai-services/openai-service)
-- [OpenAI](https://openai.com/) for the underlying models
-- [LogSeq](https://logseq.com/) for the excellent note-taking platform
+## 🙏 Acknowledgements
+
+- **[Brian Sunter](https://github.com/briansunter)** - For the excellent [logseq-plugin-gpt3-openai](https://github.com/briansunter/logseq-plugin-gpt3-openai) foundation
+- **[Azure OpenAI Service](https://azure.microsoft.com/en-us/products/ai-services/openai-service)** - For enterprise-grade AI services
+- **[OpenAI](https://openai.com/)** - For the underlying language models
+- **[Logseq](https://logseq.com/)** - For the amazing note-taking platform
+- **The Logseq Community** - For continuous feedback and support
