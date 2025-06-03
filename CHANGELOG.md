@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/haha1903/logseq-plugin-azure-openai/compare/v1.2.0...v1.3.0) (2025-06-03)
+
+
+### Features
+
+* Add a "Replace by Selected" feature to the Logseq Azure plugin. ([#4](https://github.com/haha1903/logseq-plugin-azure-openai/issues/4)) ([f479439](https://github.com/haha1903/logseq-plugin-azure-openai/commit/f479439117b762d8455da22482a962b5858fd199))
+
 # [1.2.0](https://github.com/haha1903/logseq-plugin-azure-openai/compare/v1.1.0...v1.2.0) (2025-05-30)
 
 
