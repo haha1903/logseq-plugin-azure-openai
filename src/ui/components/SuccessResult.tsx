@@ -19,15 +19,15 @@ export const SuccessResult = ({
     const selection = window.getSelection();
     const container = contentRef.current;
     
-    if (!selection || !container || selection.rangeCount === 0) {
-      if (lastSelectionRef.current !== '') {
-        lastSelectionRef.current = '';
-        onSelectionChange?.('');
-      }
+    // Basic check: ensure we have selection object and container
+    if (!selection || !container) {
+      onSelectionChange?.('');
       return;
     }
 
     const selectedText = selection.toString().trim();
+    
+    // If no text selected, clear selection
     if (!selectedText) {
       if (lastSelectionRef.current !== '') {
         lastSelectionRef.current = '';
@@ -36,34 +36,16 @@ export const SuccessResult = ({
       return;
     }
 
-    // Check if selection is within our content container
-    try {
+    // Simple check: whether selection is within our container
+    if (selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
-      const startContainer = range.startContainer;
-      const endContainer = range.endContainer;
+      const isWithinContainer = container.contains(range.commonAncestorContainer) || 
+                                container.contains(range.commonAncestorContainer.parentNode);
       
-      // For both text nodes and element nodes, check if they're within our container
-      const isStartInContainer = container.contains(
-        startContainer.nodeType === Node.TEXT_NODE ? startContainer.parentNode : startContainer
-      );
-      const isEndInContainer = container.contains(
-        endContainer.nodeType === Node.TEXT_NODE ? endContainer.parentNode : endContainer
-      );
-      
-      if (isStartInContainer && isEndInContainer) {
-        if (selectedText !== lastSelectionRef.current) {
-          lastSelectionRef.current = selectedText;
-          onSelectionChange?.(selectedText);
-        }
-      } else {
-        if (lastSelectionRef.current !== '') {
-          lastSelectionRef.current = '';
-          onSelectionChange?.('');
-        }
-      }
-    } catch (e) {
-      // Fallback: if range operations fail, clear selection
-      if (lastSelectionRef.current !== '') {
+      if (isWithinContainer && selectedText !== lastSelectionRef.current) {
+        lastSelectionRef.current = selectedText;
+        onSelectionChange?.(selectedText);
+      } else if (!isWithinContainer && lastSelectionRef.current !== '') {
         lastSelectionRef.current = '';
         onSelectionChange?.('');
       }
@@ -87,13 +69,13 @@ export const SuccessResult = ({
         document.removeEventListener('selectionchange', checkSelection);
       };
     }
-    // 明确返回 undefined 以满足 TypeScript
+    // Explicitly return undefined to satisfy TypeScript
     return undefined;
   }, [checkSelection, viewMode]);
 
   // Memoize ReactMarkdown components to prevent unnecessary re-renders
   const markdownComponents = useMemo(() => ({
-    // 简化样式，避免干扰文本选择
+    // Simplified styles to avoid interfering with text selection
     h1: ({ children, ...props }: any) => <h1 {...props} style={{fontSize: '1.5rem', fontWeight: 'bold', color: 'white', marginBottom: '1rem', borderBottom: '1px solid #475569', paddingBottom: '0.5rem'}}>{children}</h1>,
     h2: ({ children, ...props }: any) => <h2 {...props} style={{fontSize: '1.25rem', fontWeight: '600', color: 'white', marginBottom: '0.75rem', marginTop: '1.5rem'}}>{children}</h2>,
     h3: ({ children, ...props }: any) => <h3 {...props} style={{fontSize: '1.125rem', fontWeight: '500', color: 'white', marginBottom: '0.5rem', marginTop: '1rem'}}>{children}</h3>,
