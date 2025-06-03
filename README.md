@@ -8,9 +8,9 @@
 
 <div align="center">
 
-[![Status](https://img.shields.io/badge/status-active-success.svg)]()
-[![GitHub Issues](https://img.shields.io/github/issues/logseq-plugin-azure-openai.svg)](https://github.com/logseq-plugin-azure-openai)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/logseq-plugin-azure-openai.svg)](https://github.com/logseq-plugin-azure-openai)
+[![Release](https://img.shields.io/github/v/release/haha1903/logseq-plugin-azure-openai)](https://github.com/haha1903/logseq-plugin-azure-openai/releases)
+[![GitHub Issues](https://img.shields.io/github/issues/haha1903/logseq-plugin-azure-openai.svg)](https://github.com/haha1903/logseq-plugin-azure-openai/issues)
+[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/haha1903/logseq-plugin-azure-openai.svg)](https://github.com/haha1903/logseq-plugin-azure-openai/pulls)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](/LICENSE)
 
 </div>
@@ -43,9 +43,15 @@ You can click and drag or shift+click to select multiple blocks to use as input 
 
 If you are not in a block, the plugin won't add any additional input text to your prompt, and will append the results of the prompt to the bottom of the page.
 
-After selecting the prompt and generating a response, a preview of the response will be shown in the popup. You can click the `Insert` button or press the enter key to insert the response into the page.
+After selecting the prompt and generating a response, a preview of the response will be shown in the popup with **markdown rendering support**. The preview offers two view modes:
+- **Preview Mode**: Renders markdown with proper formatting, headers, lists, code blocks, and tables
+- **Raw Mode**: Shows the raw markdown text for editing or copying
+
+You can click the `Insert` button or press the enter key to insert the response into the page.
 
 You can also click the `Replace` button to replace the selected block with the response.
+
+Additionally, you can use the `Replace by Selected` button to replace only the text you have selected in the preview area, giving you more precise control over what content to insert.
 
 If you don't like the response, you can click the `Regenerate` button to generate a new response.
 
@@ -87,6 +93,12 @@ For example, you can create a template like this:
 ### Replace
 To replace the selected block with the generated text, click the `Replace` button.
 
+### Replace by Selected
+The `Replace by Selected` button allows you to replace only the text you have selected in the preview area. This feature provides fine-grained control over which parts of the AI response you want to insert into your document. Simply:
+1. Select the desired text in the preview area (works in both Preview and Raw modes)
+2. Click the `Replace by Selected` button
+3. Only the selected portion will replace your original content
+
 ### Regenerate
 If you don't like the output of the prompt, you can click the `Regenerate` button to generate a new response. Sometimes the first response is not the best, but the second or third response can be better.
 
@@ -98,6 +110,18 @@ Type `/gpt-block` in a block or select `gpt-block` from the block menu.
 
 #### Ask questions
 You can use this command to ask questions about the content in your block.
+
+## `gpt-replace-block`
+
+Type `/gpt-replace-block` in a block or select `gpt-replace-block` from the block menu, or use the configurable keyboard shortcut.
+
+`gpt-replace-block` will send the block to Azure OpenAI's GPT API and replace the current block content with the AI response. This command has its own **configurable prompt setting**, allowing you to customize the AI behavior specifically for block replacement operations.
+
+#### Use Cases
+- Refining and improving existing text
+- Correcting grammar and style
+- Translating content
+- Reformatting text according to specific requirements
 
 ### `gpt-page`
 
@@ -198,7 +222,8 @@ The plugin provides several configurable settings:
 - **Temperature**: Controls randomness in output (0.0 to 2.0)
 - **Max Tokens**: Maximum number of tokens to generate
 - **Output prefix**: Text to prepend to generated content
-- **Keyboard Shortcuts**: Customizable shortcuts for different commands
+- **Replace Block Prompt**: Custom prompt specifically for the `gpt-replace-block` command
+- **Keyboard Shortcuts**: Customizable shortcuts for different commands (including `gpt-replace-block`)
 
 ## FAQ <a name = "faq"></a>
 
