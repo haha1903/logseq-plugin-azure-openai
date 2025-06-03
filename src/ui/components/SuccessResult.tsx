@@ -1,9 +1,94 @@
-import { useState } from "react";
+import { useState, useCallback, useRef, useMemo } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 
-export const SuccessResult = ({ result }: { result: string }) => {
+export const SuccessResult = ({ 
+  result, 
+  onSelectionChange 
+}: { 
+  result: string;
+  onSelectionChange?: (selectedText: string) => void;
+}) => {
   const [viewMode, setViewMode] = useState<'markdown' | 'raw'>('markdown');
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  const checkSelection = useCallback(() => {
+    const selection = window.getSelection();
+    const container = contentRef.current;
+    
+    if (!selection || !container || selection.rangeCount === 0) {
+      onSelectionChange?.('');
+      return;
+    }
+
+    const selectedText = selection.toString().trim();
+    if (!selectedText) {
+      onSelectionChange?.('');
+      return;
+    }
+
+    // Check if selection is within our content container
+    try {
+      const range = selection.getRangeAt(0);
+      const startContainer = range.startContainer;
+      const endContainer = range.endContainer;
+      
+      // For both text nodes and element nodes, check if they're within our container
+      const isStartInContainer = container.contains(
+        startContainer.nodeType === Node.TEXT_NODE ? startContainer.parentNode : startContainer
+      );
+      const isEndInContainer = container.contains(
+        endContainer.nodeType === Node.TEXT_NODE ? endContainer.parentNode : endContainer
+      );
+      
+      if (isStartInContainer && isEndInContainer) {
+        onSelectionChange?.(selectedText);
+      } else {
+        onSelectionChange?.('');
+      }
+    } catch (e) {
+      // Fallback: if range operations fail, clear selection
+      onSelectionChange?.('');
+    }
+  }, [onSelectionChange]);
+
+  const handleMouseUp = useCallback(() => {
+    // Small delay to ensure selection is finalized
+    setTimeout(checkSelection, 10);
+  }, [checkSelection]);
+
+  const handleTextAreaSelect = useCallback((e: React.SyntheticEvent<HTMLTextAreaElement>) => {
+    const textarea = e.target as HTMLTextAreaElement;
+    const selectedText = textarea.value.substring(textarea.selectionStart, textarea.selectionEnd).trim();
+    onSelectionChange?.(selectedText);
+  }, [onSelectionChange]);
+
+  // Memoize ReactMarkdown components to prevent unnecessary re-renders
+  const markdownComponents = useMemo(() => ({
+    // 简化样式，避免干扰文本选择
+    h1: ({ children, ...props }: any) => <h1 {...props} style={{fontSize: '1.5rem', fontWeight: 'bold', color: 'white', marginBottom: '1rem', borderBottom: '1px solid #475569', paddingBottom: '0.5rem'}}>{children}</h1>,
+    h2: ({ children, ...props }: any) => <h2 {...props} style={{fontSize: '1.25rem', fontWeight: '600', color: 'white', marginBottom: '0.75rem', marginTop: '1.5rem'}}>{children}</h2>,
+    h3: ({ children, ...props }: any) => <h3 {...props} style={{fontSize: '1.125rem', fontWeight: '500', color: 'white', marginBottom: '0.5rem', marginTop: '1rem'}}>{children}</h3>,
+    p: ({ children, ...props }: any) => <p {...props} style={{color: '#cbd5e1', marginBottom: '0.75rem', lineHeight: '1.6'}}>{children}</p>,
+    code: ({ children, className, ...props }: any) => {
+      const isInline = !className;
+      if (isInline) {
+        return <code {...props} style={{padding: '0.125rem 0.375rem', fontSize: '0.75rem', fontFamily: 'monospace', color: '#93c5fd', backgroundColor: '#1e293b', borderRadius: '0.25rem', border: '1px solid #475569'}}>{children}</code>;
+      }
+      return <code {...props} style={{display: 'block', padding: '0.75rem', fontSize: '0.75rem', fontFamily: 'monospace', color: '#cbd5e1', backgroundColor: '#1e293b', borderRadius: '0.25rem', border: '1px solid #475569', overflowX: 'auto'}}>{children}</code>;
+    },
+    pre: ({ children, ...props }: any) => <pre {...props} style={{marginBottom: '1rem', overflowX: 'auto'}}>{children}</pre>,
+    ul: ({ children, ...props }: any) => <ul {...props} style={{listStyle: 'disc', listStylePosition: 'inside', color: '#cbd5e1', marginBottom: '0.75rem'}}>{children}</ul>,
+    ol: ({ children, ...props }: any) => <ol {...props} style={{listStyle: 'decimal', listStylePosition: 'inside', color: '#cbd5e1', marginBottom: '0.75rem'}}>{children}</ol>,
+    li: ({ children, ...props }: any) => <li {...props} style={{color: '#cbd5e1', marginBottom: '0.25rem'}}>{children}</li>,
+    blockquote: ({ children, ...props }: any) => <blockquote {...props} style={{borderLeft: '4px solid #60a5fa', paddingLeft: '1rem', fontStyle: 'italic', color: '#d1d5db', margin: '1rem 0'}}>{children}</blockquote>,
+    a: ({ children, href, ...props }: any) => <a {...props} href={href} style={{color: '#60a5fa', textDecoration: 'underline'}} target="_blank" rel="noopener noreferrer">{children}</a>,
+    strong: ({ children, ...props }: any) => <strong {...props} style={{fontWeight: '600', color: 'white'}}>{children}</strong>,
+    em: ({ children, ...props }: any) => <em {...props} style={{fontStyle: 'italic', color: '#d1d5db'}}>{children}</em>,
+    table: ({ children, ...props }: any) => <table {...props} style={{width: '100%', borderCollapse: 'collapse', border: '1px solid #475569', marginBottom: '1rem'}}>{children}</table>,
+    th: ({ children, ...props }: any) => <th {...props} style={{border: '1px solid #475569', padding: '0.5rem 0.75rem', backgroundColor: '#1e293b', fontWeight: '500', color: 'white'}}>{children}</th>,
+    td: ({ children, ...props }: any) => <td {...props} style={{border: '1px solid #475569', padding: '0.5rem 0.75rem', color: '#cbd5e1'}}>{children}</td>,
+  }), []);
 
   return (
     <div className="relative">
@@ -38,59 +123,58 @@ export const SuccessResult = ({ result }: { result: string }) => {
               Raw
             </button>
           </div>
+          
           <div className="px-2 py-1 text-xs font-medium text-green-400 bg-green-400/10 border border-green-400/20 rounded-full">
             ✓ Generated
           </div>
         </div>
       </div>
       
-      {viewMode === 'markdown' ? (
-        <div className="w-full pt-12 min-h-[300px] text-sm text-white bg-slate-900/50 border border-slate-700/50 rounded-lg overflow-auto scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800">
-          <div className="p-6 prose prose-invert prose-sm max-w-none text-left">
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm]}
-              components={{
-                // 自定义组件样式
-                h1: ({ children }) => <h1 className="text-2xl font-bold text-white mb-4 border-b border-slate-600 pb-2 text-left">{children}</h1>,
-                h2: ({ children }) => <h2 className="text-xl font-semibold text-white mb-3 mt-6 text-left">{children}</h2>,
-                h3: ({ children }) => <h3 className="text-lg font-medium text-white mb-2 mt-4 text-left">{children}</h3>,
-                p: ({ children }) => <p className="text-slate-200 mb-3 leading-relaxed text-left">{children}</p>,
-                code: ({ children, className }) => {
-                  const isInline = !className;
-                  if (isInline) {
-                    return <code className="px-1.5 py-0.5 text-xs font-mono text-blue-300 bg-slate-800 rounded border border-slate-700">{children}</code>;
-                  }
-                  return <code className="block p-3 text-xs font-mono text-slate-200 bg-slate-800 rounded border border-slate-700 overflow-x-auto text-left">{children}</code>;
-                },
-                pre: ({ children }) => <pre className="mb-4 overflow-x-auto text-left">{children}</pre>,
-                ul: ({ children }) => <ul className="list-disc list-inside text-slate-200 mb-3 space-y-1 text-left">{children}</ul>,
-                ol: ({ children }) => <ol className="list-decimal list-inside text-slate-200 mb-3 space-y-1 text-left">{children}</ol>,
-                li: ({ children }) => <li className="text-slate-200 text-left">{children}</li>,
-                blockquote: ({ children }) => <blockquote className="border-l-4 border-blue-400 pl-4 italic text-slate-300 my-4 text-left">{children}</blockquote>,
-                a: ({ children, href }) => <a href={href} className="text-blue-400 hover:text-blue-300 underline" target="_blank" rel="noopener noreferrer">{children}</a>,
-                strong: ({ children }) => <strong className="font-semibold text-white">{children}</strong>,
-                em: ({ children }) => <em className="italic text-slate-300">{children}</em>,
-                table: ({ children }) => <table className="w-full border-collapse border border-slate-700 mb-4 text-left">{children}</table>,
-                th: ({ children }) => <th className="border border-slate-700 px-3 py-2 bg-slate-800 text-left font-medium text-white">{children}</th>,
-                td: ({ children }) => <td className="border border-slate-700 px-3 py-2 text-slate-200 text-left">{children}</td>,
+      <div 
+        ref={contentRef}
+        onMouseUp={handleMouseUp}
+        style={{ 
+          userSelect: 'text', 
+          WebkitUserSelect: 'text',
+          MozUserSelect: 'text',
+          msUserSelect: 'text',
+          cursor: 'text'
+        }}
+      >
+        {viewMode === 'markdown' ? (
+          <div className="w-full pt-12 min-h-[300px] text-sm text-white bg-slate-900/50 border border-slate-700/50 rounded-lg overflow-auto scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800">
+            <div 
+              className="p-6 max-w-none text-left" 
+              data-markdown-content
+              style={{ 
+                userSelect: 'text', 
+                WebkitUserSelect: 'text',
+                MozUserSelect: 'text',
+                msUserSelect: 'text'
               }}
             >
-              {result}
-            </ReactMarkdown>
+              <ReactMarkdown
+                remarkPlugins={[remarkGfm]}
+                components={markdownComponents}
+              >
+                {result}
+              </ReactMarkdown>
+            </div>
           </div>
-        </div>
-      ) : (
-        <textarea
-          rows={12}
-          value={result}
-          readOnly
-          className="w-full p-6 pt-12 text-sm font-mono text-white bg-slate-900/50 border border-slate-700/50 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800 text-left"
-          style={{
-            minHeight: '300px',
-            lineHeight: '1.6'
-          }}
-        />
-      )}
+        ) : (
+          <textarea
+            rows={12}
+            value={result}
+            readOnly
+            onSelect={handleTextAreaSelect}
+            className="w-full p-6 pt-12 text-sm font-mono text-white bg-slate-900/50 border border-slate-700/50 rounded-lg resize-none focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-transparent scrollbar-thin scrollbar-thumb-slate-600 scrollbar-track-slate-800 text-left"
+            style={{
+              minHeight: '300px',
+              lineHeight: '1.6'
+            }}
+          />
+        )}
+      </div>
       
       {/* Subtle gradient overlay for depth */}
       <div className="absolute inset-0 bg-gradient-to-t from-slate-900/10 to-transparent pointer-events-none rounded-lg" />

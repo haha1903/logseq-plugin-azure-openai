@@ -53,6 +53,7 @@ export const LogseqAI = ({
     status: "ready",
   });
   const [previousCommand, setPreviousCommand] = useState<Command | null>(null);
+  const [selectedText, setSelectedText] = useState<string>('');
 
   const [query, setQuery] = useState("");
   const commandQuery = new CommandQuery(commands);
@@ -85,6 +86,7 @@ export const LogseqAI = ({
   function reset() {
     setQuery("");
     setCommandState({ status: "ready" });
+    setSelectedText("");
   }
 
   const handleKeyPress = useCallback(
@@ -162,6 +164,18 @@ export const LogseqAI = ({
               </svg>
               Insert ⏎
             </CommandButton>
+            <CommandButton
+              disabled={!selectedText}
+              onClick={() => {
+                selectedText && onReplace(selectedText);
+                reset();
+              }}
+            >
+              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3-3m0 0l-3 3m3-3v12" />
+              </svg>
+              Replace by selected
+            </CommandButton>
           </>
         }
       />
@@ -173,7 +187,12 @@ export const LogseqAI = ({
     } else if (commandState.status === "error") {
       commandResult = <ErrorResult message={commandState.error.message} />;
     } else if (commandState.status === "success") {
-      commandResult = <SuccessResult result={commandState.result} />;
+      commandResult = <SuccessResult 
+        result={commandState.result} 
+        onSelectionChange={(selectedText: string) => {
+          setSelectedText(selectedText);
+        }}
+      />;
     }
 
     result = (
