@@ -62,7 +62,7 @@ export const settingsSchema: SettingSchemaDesc[] = [
   {
     key: "openAIMaxTokens",
     type: "number",
-    default: 32000,
+    default: 16384,
     title: "Max Tokens",
     description:
       "The maximum amount of tokens to generate. Tokens can be words or just chunks of characters. The number of tokens processed in a given API request depends on the length of both your inputs and outputs. As a rough rule of thumb, 1 token is approximately 4 characters or 0.75 words for English text. One limitation to keep in mind is that your text prompt and generated completion combined must be no more than the model's maximum context length.",
