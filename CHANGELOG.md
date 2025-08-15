@@ -1,3 +1,10 @@
+## [1.3.1](https://github.com/haha1903/logseq-plugin-azure-openai/compare/v1.3.0...v1.3.1) (2025-08-15)
+
+
+### Bug Fixes
+
+* reduce default max tokens value to 16384 ([b7c277e](https://github.com/haha1903/logseq-plugin-azure-openai/commit/b7c277e02de90ab001a43c95e27aab90c94f93ba))
+
 # [1.3.0](https://github.com/haha1903/logseq-plugin-azure-openai/compare/v1.2.0...v1.3.0) (2025-06-03)
 
 
